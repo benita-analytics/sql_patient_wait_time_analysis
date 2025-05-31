@@ -44,6 +44,7 @@ Avg wait time.
 This project provides evidence-based insights on improving scheduling efficiency, targeting communication (e.g., SMS reminders), and reducing patient no-shows.
 
 ### Total Patients
+`````sql
 SELECT COUNT (DISTINCT(PatientId))
 AS Total_patients 
 FROM "Appointments"
