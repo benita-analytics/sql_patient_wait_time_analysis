@@ -49,5 +49,5 @@ SELECT COUNT (DISTINCT(PatientId))
 AS Total_patients 
 FROM "Appointments"
 |Total_patients|
-|-------------|
-|62299|
+|------------- |
+|62299         |
