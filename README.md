@@ -49,10 +49,11 @@ This project provides evidence-based insights on improving scheduling efficiency
 SELECT COUNT (DISTINCT(PatientId))
 AS Total_patients 
 FROM "Appointments"
+```
 |Total_patients|
 |------------- |
 |62299         |
-```
+
 ### Total Appointments
 ```sql
 SELECT COUNT (DISTINCT(AppointmentID)) 
@@ -151,3 +152,45 @@ GROUP BY Neighbourhood
 |BONFIM	|8|
 
 view full table https://docs.google.com/spreadsheets/d/1zgbTjNDPCZ6vhDFnfhwLT1eTU5P1D-aVdfT6-IXufYI/edit?usp=sharing
+
+### SMS REMINDER
+```sql
+SELECT 
+CASE SMS_received
+WHEN '0' THEN 'NO' 
+WHEN '1' THEN 'YES'
+END AS got_SMS,
+CASE [No-show]
+WHEN 'No' THEN 'Did_not'
+WHEN 'Yes' THEN 'showed_up'
+END AS Status , 
+COUNT (*) AS count
+from Appointments
+GROUP BY SMS_received, [No-show]
+```
+|got_SMS|Status|count|
+|------|------|-----|
+|NO|Did_not|62510|
+|NO|showed_up|12535|
+|YES|Did_not|25698|
+|YES|showed_up|9784|
+
+### Wait time by Patient type
+```sql
+SELECT
+CASE 
+WHEN Hipertension= 'True'
+OR Diabetes= 'True' 
+OR Alcoholism= 'True'
+OR Handcap= 'True'
+THEN 'Chronic'
+ELSE 'Not_Chronic'
+END AS Patient_Type, 
+ROUND(AVG(Julianday(AppointmentDay)- Julianday (ScheduledDay))) as wait_time, count(*) AS count
+FROM Appointments
+GROUP BY Patient_Type
+```
+|Patient_type|wait_time|count|
+|----|----|----|
+|Chronic|9|26303|
+|Not_Chronic|10|84224|
